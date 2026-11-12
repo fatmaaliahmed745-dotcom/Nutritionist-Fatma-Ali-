@@ -2,11 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="theme-color" content="#245f95">
-<meta name="description" content="منصة أخصائية التغذية فاطمة علي أحمد للمتابعة والتثقيف الغذائي والخدمات الغذائية.">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192.png" type="image/png">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>فاطمة علي أحمد | أخصائية تغذية</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -228,22 +223,6 @@ footer{background:var(--foot);color:var(--btntxt);text-align:center;padding:26px
 <div class="row" style="justify-content:flex-start;margin-top:16px"><input id="q" placeholder="ابحثي باسم الحالة أو رقمها" style="max-width:240px" aria-label="بحث"><select id="fs" style="max-width:190px" aria-label="تصفية بالحالة"><option value="">كل الحالات</option><option>جديدة</option><option>في انتظار التقييم</option><option>نشطة</option><option>تحتاج تجديد</option><option>متوقفة</option><option>مكتملة</option><option value="late">تحتاج متابعة</option><option value="nosent">لم يرسلوا تقرير اليوم</option><option value="abs">غائبون 3 أيام أو أكثر</option></select><button class="btn" id="newc" type="button">حالة جديدة</button></div>
 <div class="cl" id="cl"></div><div id="ed"></div>
 </div></section>
-<section id="app-tools" style="padding:18px 0 90px;background:var(--soft)">
- <div class="wrap">
-  <details class="card" style="max-width:760px;margin:auto">
-   <summary style="cursor:pointer;color:var(--navy);font-weight:800;font-size:18px">⚙️ أدوات التطبيق وحفظ البيانات</summary>
-   <p class="note" style="font-size:14px">بيانات المتابعة التي يحفظها هذا المتصفح تظل على نفس الجهاز والمتصفح. استخدمي النسخة الاحتياطية لنقل بياناتك أو الاحتفاظ بها. لا تشاركي ملف النسخة الاحتياطية لأنه قد يحتوي على بيانات شخصية.</p>
-   <div class="row" style="justify-content:flex-start;gap:10px">
-    <button class="btn" type="button" id="nfa-export">تنزيل نسخة احتياطية</button>
-    <label class="btn alt" for="nfa-import" style="cursor:pointer;margin:0">استعادة نسخة احتياطية</label>
-    <input id="nfa-import" type="file" accept="application/json,.json" hidden>
-    <button class="btn alt" type="button" id="nfa-install" hidden>تثبيت التطبيق</button>
-   </div>
-   <p id="nfa-backup-status" class="note" role="status" aria-live="polite"></p>
-   <p class="note">التثبيت يعمل بعد رفع الملفات على رابط HTTPS. على iPhone يمكن اختيار «إضافة إلى الشاشة الرئيسية» من قائمة المشاركة في Safari.</p>
-  </details>
- </div>
-</section>
 <footer>فاطمة علي أحمد، أخصائية تغذية<br>تغذَّ جيدًا، وعِش جيدًا، وكن بخير</footer>
 
 <a class="btn fab" href="https://wa.me/201037884580?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%AD%D8%AC%D8%B2%20%D9%85%D9%88%D8%B9%D8%AF%20%D9%85%D8%AA%D8%A7%D8%A8%D8%B9%D8%A9" aria-label="تواصل مع السكرتيرة على واتساب">احجز عبر واتساب</a>
@@ -694,44 +673,5 @@ m.textContent="جاري فتح واتساب لإرسال طلبك...";window.ope
 all();
 }catch(e){}})();</script>
 
-<script>
-/* NFA: أدوات مجانية للنسخ الاحتياطي والتثبيت */
-(function(){
-  var status=document.getElementById('nfa-backup-status');
-  var exportBtn=document.getElementById('nfa-export');
-  var importInput=document.getElementById('nfa-import');
-  function say(msg){if(status)status.textContent=msg;}
-  function snapshot(){var data={app:'Nutritionist Fatma Ali',format:1,createdAt:new Date().toISOString(),storage:{}};
-    try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf('nfa_')===0)data.storage[k]=localStorage.getItem(k)}}catch(e){}
-    return data;
-  }
-  if(exportBtn)exportBtn.addEventListener('click',function(){
-    var data=snapshot(),count=Object.keys(data.storage).length;
-    if(!count){say('لا توجد بيانات محلية محفوظة حاليًا في هذا المتصفح.');return;}
-    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download='fatma-ali-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);
-    say('تم تجهيز نسخة احتياطية تحتوي على '+count+' عناصر بيانات. احتفظي بها في مكان آمن.');
-  });
-  if(importInput)importInput.addEventListener('change',function(){
-    var file=importInput.files&&importInput.files[0];if(!file)return;
-    var reader=new FileReader();reader.onload=function(){try{
-      var data=JSON.parse(reader.result);if(!data||data.app!=='Nutritionist Fatma Ali'||data.format!==1||!data.storage||typeof data.storage!=='object')throw new Error('invalid');
-      var keys=Object.keys(data.storage).filter(function(k){return k.indexOf('nfa_')===0&&typeof data.storage[k]==='string'});
-      if(!keys.length)throw new Error('empty');
-      if(!confirm('سيتم استعادة '+keys.length+' عناصر بيانات على هذا الجهاز. قد تستبدل بيانات موجودة بنفس المفاتيح. هل تريدين المتابعة؟'))return;
-      keys.forEach(function(k){localStorage.setItem(k,data.storage[k])});
-      say('تمت استعادة البيانات. أعيدي تحميل الصفحة لتظهر كل التغييرات.');
-    }catch(e){say('ملف النسخة الاحتياطية غير صالح أو لا يحتوي على بيانات التطبيق.');}
-    importInput.value='';};reader.onerror=function(){say('تعذر قراءة الملف.');};reader.readAsText(file);
-  });
-  var installBtn=document.getElementById('nfa-install'),installPrompt=null;
-  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();installPrompt=e;if(installBtn)installBtn.hidden=false;});
-  if(installBtn)installBtn.addEventListener('click',async function(){if(!installPrompt){say('لو لم يظهر خيار التثبيت، افتحي قائمة المتصفح واختاري إضافة إلى الشاشة الرئيسية.');return;}installPrompt.prompt();try{await installPrompt.userChoice;}catch(e){}installPrompt=null;installBtn.hidden=true;});
-  window.addEventListener('appinstalled',function(){say('تم تثبيت التطبيق على جهازك.');});
-  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
-    window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){say('لم يتم تفعيل وضع العمل دون إنترنت في هذا المتصفح.');});});
-  }
-})();
-</script>
 </body>
 </html>
